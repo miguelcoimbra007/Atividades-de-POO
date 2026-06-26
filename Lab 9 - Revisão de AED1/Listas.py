@@ -13,7 +13,7 @@ while True:
 
 print("Lista:", numeros)
 print("3 primeiros:", numeros[:3])
-print("2 últimos:", numeros[-2:])
+print("2 ultimos:", numeros[-2:])
 print("Lista invertida:", numeros[::-1])
 print("Numeros Pares:", numeros[::2])
 print("Numeros Impar:", numeros[1::2])
@@ -54,7 +54,7 @@ print("original:", lista)
 print("Índice do maior valor:", lista.index(max(lista)))
 print("Índice do menor valor:", lista.index(min(lista)))
 print("Soma:", sum(lista))
-print("Média:", sum(lista) / len(lista))
+print("Media:", sum(lista) / len(lista))
 
 
 # questão 04
@@ -73,6 +73,8 @@ for i in range(20):
     lista2.append(randint(0, 50))
 
 interseccao = sorted(list(set(lista1) & set(lista2)))
+
+# Camilla pesquisei sobre o & e é mais facil usar ele doq criar outra lista (Interseção = [])
 
 print("Lista 1:", lista1)
 print("Lista 2:", lista2)
@@ -119,3 +121,5 @@ for i in range(n):
 print("Resultado:")
 for linha in matriz:
     print(linha)
+
+# Pesquisei essa.
