@@ -21,23 +21,17 @@ print("Numeros Impar:", numeros[1::2])
 
 # questão 02
 
-urls = [
-    "www.google.com",
-    "www.gmail.com",
-    "www.github.com",
-    "www.reddit.com",
-    "www.yahoo.com"
-]
+    q = int(input("informe qnts urls"))
+    urls = []
+    urls2 = []
 
-dominios = []
+    for i in range(0 , q):
+        u = str(input("Mostra a url: "))
+        urls.append(u)
+        urls.append("www.{u}.com.br")
 
-for url in urls:
-    dominios.append(url[4:-4])
-
-print("URLs:", urls)
-print("Domínios:", dominios)
-
-
+        print(urls)
+        print(urls2)
 # questão 03
 
 from random import randint
@@ -56,6 +50,7 @@ print("Índice do menor valor:", lista.index(min(lista)))
 print("Soma:", sum(lista))
 print("Media:", sum(lista) / len(lista))
 
+#pesquisei sobre funçoes nativas
 
 # questão 04
 
@@ -121,5 +116,3 @@ for i in range(n):
 print("Resultado:")
 for linha in matriz:
     print(linha)
-
-# Pesquisei essa.

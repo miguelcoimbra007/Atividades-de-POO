@@ -19,7 +19,7 @@ print(resultado)
 
 #Q2
 
-arquivo = open("estomago.txt", "r", encoding="utf-8")
+arquivo = open("estomago.txt")
 texto = arquivo.read()
 arquivo.close()
 
