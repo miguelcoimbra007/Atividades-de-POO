@@ -21,17 +21,18 @@ print("Numeros Impar:", numeros[1::2])
 
 # questão 02
 
-    q = int(input("informe qnts urls"))
-    urls = []
-    urls2 = []
+q = int(input("informe qnts urls"))
+urls = []
+urls2 = []
 
-    for i in range(0 , q):
+for i in range(0 , q):
         u = str(input("Mostra a url: "))
         urls.append(u)
         urls.append("www.{u}.com.br")
 
         print(urls)
         print(urls2)
+
 # questão 03
 
 from random import randint
@@ -50,11 +51,11 @@ print("Índice do menor valor:", lista.index(min(lista)))
 print("Soma:", sum(lista))
 print("Media:", sum(lista) / len(lista))
 
-#pesquisei sobre funçoes nativas
+#funções nativas
 
 # questão 04
 
-# .......................................
+
 
 # questão 05
 
@@ -68,8 +69,6 @@ for i in range(20):
     lista2.append(randint(0, 50))
 
 interseccao = sorted(list(set(lista1) & set(lista2)))
-
-# Camilla pesquisei sobre o & e é mais facil usar ele doq criar outra lista (Interseção = [])
 
 print("Lista 1:", lista1)
 print("Lista 2:", lista2)
