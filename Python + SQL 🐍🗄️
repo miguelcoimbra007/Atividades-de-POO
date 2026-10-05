@@ -1,0 +1,62 @@
+EXERCICIU 1 
+
+import sqlite3
+
+  connection = sqlite3.connect("clientes.db")
+  cursor = connection.cursor()
+  
+  cursor.execute("DROP TABLE IF EXISTS cliente")
+  cursor.execute("""
+  CREATE TABLE cliente (
+      id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome TEXT,
+      cidade TEXT
+  );
+  """)
+
+  cursor.execute("""
+  INSERT INTO cliente (nome, cidade)
+  VALUES
+  ('Camila', 'pikachu'),
+  ('camilo', 'charmander'),
+  ('chico', 'bulbassauro');
+  """)
+  connection.commit()
+  
+  cursor.execute("SELECT * FROM cliente")
+  for registro in cursor.fetchall():
+      print(registro)
+  
+  connection.close()
+
+
+EXERCICIU 2 
+
+from sqlalchemy import create_engine, text
+
+engine = create_engine("sqlite+pysqlite:///clientes_alchemy.db",)
+
+with engine.begin() as conn:
+    conn.execute(text("DROP TABLE IF EXISTS cliente"))
+    conn.execute(text("""
+        CREATE TABLE cliente (
+            id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            cidade TEXT
+        )
+    """))
+    conn.execute(
+        text("INSERT INTO cliente (nome, cidade) VALUES (:nome, :cidade)"),
+        [
+            {"nome": "Camila", "cidade": "pikachu"},
+            {"nome": "camilo", "cidade": "charmander"},
+            {"nome": "chico", "cidade": "bulbassauro"},
+        ],
+    )
+
+with engine.connect() as conn:
+    cursor = conn.execute(text("SELECT * FROM cliente"))
+    for row in cursor.fetchall():
+        print(row)
+
+.................................................................................................................................................................................................................
