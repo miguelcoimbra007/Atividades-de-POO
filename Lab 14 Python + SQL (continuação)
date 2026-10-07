@@ -1,0 +1,109 @@
+Exercício
+Vamos praticar com uma nova tabela de alunos.
+
+1. Modelagem. Crie a classe Aluno, mapeada para a tabela alunos, com as colunas:
+
+id: inteiro, chave primária
+nome: texto
+curso: texto
+nota: número decimal (Float, importado de sqlalchemy)
+2. Criação. Crie a tabela no banco com Base.metadata.create_all(engine).
+
+3. Inserção. Insira os 5 alunos abaixo com add_all() e faça o commit():
+
+nome	curso	nota
+Ana	Informática	9.0
+Bruno	Informática	6.5
+Carla	Eletrônica	7.5
+Diego	Eletrônica	5.0
+Elisa	Informática	8.0
+4. Consultas. Escreva e execute uma consulta para cada item:
+
+a) Todos os alunos
+b) Apenas o nome e a nota de cada aluno
+c) Alunos do curso "Informática"
+d) Alunos com nota maior ou igual a 7, da maior para a menor nota
+e) Quantidade de alunos por curso
+
+
+
+
+# 1 e 2
+
+from sqlalchemy import Column, Float, Integer, String
+from sqlalchemy.orm import declarative_base
+
+engine = create_engine('sqlite:///Escolinha.db')
+
+Base = declarative_base()
+
+class Aluno(Base):
+    Escolinha.db = "alunos"
+
+    id = Column(Integer, primary_key=True)
+    nome = Column(String)
+    curso = Column(String)
+    nota = Column(Float)
+
+# 3
+
+from sqlalchemy.orm import sessionmaker
+
+Session = sessionmaker(bind=engine) ### cursor // sessão
+session = Session()
+
+alunos = [
+    Aluno(nome="Ana", curso="Informática", nota=9.0),
+    Aluno(nome="Bruno", curso="Informática", nota=6.5),
+    Aluno(nome="Carla", curso="Eletrônica", nota=7.5),
+    Aluno(nome="Diego", curso="Eletrônica", nota=5.0),
+    Aluno(nome="Elisa", curso="Informática", nota=8.0),
+]
+
+session.add_all(alunos)
+session.commit()
+
+# 4a
+
+alunos = session.query(Aluno).all()
+
+for alunos in todos_alunos:
+    print(
+        f"Id: {aluno.id} | Nome: {aluno.nome} | curso: {aluno.curso} | nota: {aluno.nota}"
+    )
+
+#4b
+
+alunos = session.query(Aluno)
+
+for alunos in todos_alunos:
+    print(
+        f"|Nome: {aluno.nome} | nota: {aluno.nota}"
+    )
+
+#4c
+
+select(alunos).where(Livro.autor == 'Informática')
+
+for aluno in alunos_Informática:
+    print(f"Nome: {aluno.nome} | Curso: {aluno.curso}")
+
+#4d
+
+from sqlalchemy import select, desc
+
+aluno = select(Aluno).where(Aluno.nota >= 7).order_by(desc(Aluno.nota))
+resultados = session.scalars(aluno).all()
+
+for aluno in alunos:
+    print(f"Nome: {aluno.nome} | nota: {aluno.nota}")
+
+#4e
+
+from sqlalchemy import select, func
+
+aluno = select(Aluno.curso, func.count(Aluno.id).label("Contagemm")).group_by(Aluno.curso)
+resultados = session.execute(aluno).all()
+
+for linha in resultados:
+    print(f"Curso: {linha.curso} | Quantidade: {linha.qtd}")
