@@ -1,0 +1,101 @@
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Table, Date, func
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker
+from datetime import date
+
+Base = declarative_base()
+
+emprestimos = Table(
+    "emprestimos",
+    Base.metadata,
+    Column("aluno_id", ForeignKey("alunos.id"), primary_key=True),
+    Column("livro_id", ForeignKey("livros.id"), primary_key=True),
+    Column("data", Date, default=date.today)
+)
+
+class Categoria(Base):
+    __tablename__ = "categorias"
+
+    id = Column(Integer, primary_key=True)
+    nome = Column(String)
+
+    livros = relationship("Livro", back_populates="categoria")
+
+
+class Livro(Base):
+    __tablename__ = "livros"
+
+    id = Column(Integer, primary_key=True)
+    titulo = Column(String)
+    categoria_id = Column(Integer, ForeignKey("categorias.id"))
+
+    categoria = relationship("Categoria", back_populates="livros")
+
+
+class Aluno(Base):
+    __tablename__ = "alunos"
+
+    id = Column(Integer, primary_key=True)
+    nome = Column(String)
+
+    livros = relationship("Livro", secondary=emprestimos)
+
+
+engine = create_engine("sqlite:///biblioteca.db")
+Base.metadata.create_all(engine)
+
+Session = sessionmaker(bind=engine)
+session = Session()
+
+c1 = Categoria(nome="Romance")
+c2 = Categoria(nome="Fantasia")
+
+l1 = Livro(titulo="Dom Casmurro", categoria=c1)
+l2 = Livro(titulo="Harry Potter", categoria=c2)
+l3 = Livro(titulo="O Pequeno Príncipe", categoria=c1)
+
+a1 = Aluno(nome="João")
+a2 = Aluno(nome="Maria")
+
+a1.livros.extend([l1, l2])
+a2.livros.extend([l2, l3])
+
+session.add_all([c1, c2, l1, l2, l3, a1, a2])
+session.commit()
+
+print("\nLIVROS POR CATEGORIA:")
+resultado = session.query(Livro).join(Categoria).filter(
+    Categoria.nome == "Romance"
+).all()
+
+for livro in resultado:
+    print(livro.titulo)
+
+print("\nEMPRÉSTIMOS:")
+resultado = session.query(Aluno.nome, Livro.titulo).join(
+    Aluno.livros
+).all()
+
+for aluno, livro in resultado:
+    print(aluno, "-", livro)
+
+print("\nLIVROS MAIS EMPRESTADOS:")
+resultado = session.query(
+    Livro.titulo,
+    func.count(emprestimos.c.livro_id)
+).join(
+    emprestimos
+).group_by(
+    Livro.id
+).order_by(
+    func.count(emprestimos.c.livro_id).desc()
+).all()
+
+for livro, quantidade in resultado:
+    print(livro, "-", quantidade, "empréstimos")
+
+session.close()
+
+
+Aluno: MIGUEL COIMBRA GOVEIA GONCALVES
+RA: 0115212
+TURMA: INFORMATICA 2A
